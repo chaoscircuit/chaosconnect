@@ -1,4 +1,4 @@
-COMPILERPATH = D:/Programs/Dev-Cpp/
+COMPILERPATH = C:/Program Files/Dev-Cpp/
 
 BUILD     = build
 SRC       = src
@@ -6,7 +6,7 @@ SRC       = src
 WXLIBNAME = wxmsw28
 CPP       = g++.exe
 LINK      = g++.exe
-WINDRES   = "windres.exe"
+WINDRES   = windres.exe
 BIN       = ChaosConnect.exe
 
 OBJ       = $(BUILD)/ChaosConnectApp.o \
@@ -29,7 +29,7 @@ OBJ       = $(BUILD)/ChaosConnectApp.o \
             $(BUILD)/GameShape.o \
             $(BUILD)/ChaosConnectResource.o
             
-LIBS      = -L"$(COMPILERPATH)Lib" \
+LIBS      = -L"$(COMPILERPATH)lib" \
             -mwindows \
             -l$(WXLIBNAME) \
             -lwxpng \
@@ -82,6 +82,9 @@ all: all-before $(BIN) all-after
 
 clean: clean-custom
 	$(RM) $(OBJ) "$(BIN)"
+
+all-before:
+	test -d $(BUILD) || mkdir $(BUILD)
 
 $(BIN): $(OBJ) $(SRC)/libchaos.h
 	$(LINK) $(OBJ) -o "$(BIN)" $(LIBS) $(LDFLAGS)
