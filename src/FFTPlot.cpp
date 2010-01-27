@@ -5,25 +5,41 @@
 
 #include "FFTPlot.h"
 
-// class constructor
 FFTPlot::FFTPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                        const wxSize& size, long style, const wxString& name) 
-                       : ChaosPlot(parent, id, pos, size, style, name)
-{
+                       : ChaosPlot(parent, id, pos, size, style, name) {
+   /**
+    *   Constructor for the FFTPlot class.
+    *
+    *   This class inherits basic plot functionality from ChaosPlot
+    */
+
     side_gutter_size = 0;
     bottom_gutter_size = 20;
     graph_title = wxT("Fast Fourier transform");
     graph_subtitle = wxT("Power Spectral Density vs. Frequency (Hz)");
 }
 
-// class destructor
-FFTPlot::~FFTPlot()
-{
-    // insert your code here
+FFTPlot::~FFTPlot() {
+    /**
+     * Destructor for the FFTPlot
+     */
 }
 
 void FFTPlot::drawPlot() {
+    /** 
+     * Draw the FFT Plot
+     *
+     * The FFT data is not collected by this function but is simply 
+     * draw by it. The main timer call to libchaos_readPlot() handles 
+     * the data collection and FFT calculation and then stores that 
+     * data. Calls to libchaos_getFFTPlotPoint() pull in the data from
+     * libchaos. From here, it's just plotting the points where we want 
+     * them.
+     */
+    // number of points to use in the graph
     const int points_to_graph  = 400;
+    // number of data points used for FFT
     const int N = 8192;
     
     int x_axis_max = (int)(float(points_to_graph)/(N*1/float(LIBCHAOS_SAMPLE_FREQUENCY)));
