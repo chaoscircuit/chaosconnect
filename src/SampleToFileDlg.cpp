@@ -77,16 +77,21 @@ void SampleToFileDlg::CreateGUIControls()
 	Center();
 }
 
-void SampleToFileDlg::OnClose(wxCloseEvent& event)
-{
+void SampleToFileDlg::OnClose(wxCloseEvent& event) {
 	Destroy();
 }
 
-/*
- * BTN_sweepClick
- */
-void SampleToFileDlg::BTN_sweepClick(wxCommandEvent& event)
-{
+void SampleToFileDlg::BTN_sweepClick(wxCommandEvent& event) {
+    /** 
+     * Perform a sample sweep.
+     *
+     * This method saves a sweep to a CSV file using the settings 
+     * provided by the user.
+     *
+     * The actual work here is handled by calls to libchaos which save
+     * the sampled data to file. A progress bar is used to show how 
+     * things are going.
+     */
     int cont;
 
     wxFileDialog dialog(this,
