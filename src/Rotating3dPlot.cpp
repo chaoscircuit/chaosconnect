@@ -127,6 +127,25 @@ int Rotating3dPlot::valueToY(int value) {
     return (graph_height-((value-smallest_y_value)*graph_height)/(largest_y_value - smallest_y_value))  + top_gutter_size;
 }
 
+
+int Rotating3dPlot::xToValue(int x) {
+    /**
+    *   Converts an x point on the graph to an ADC value.
+    *   This is a very important function that is used by the parent class
+    *   (ChaosPlot) for zooming.
+    */
+    return ((x - side_gutter_size)*(largest_x_value - smallest_x_value))/graph_width + smallest_x_value;
+}
+
+int Rotating3dPlot::yToValue(int y) {
+    /**
+    *   Converts a y point on the graph to an ADC value.
+    *   This is a very important function that is used by the parent class
+    *   (ChaosPlot) for zooming.
+    */
+    return ((graph_height + top_gutter_size - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
+}
+
 void Rotating3dPlot::zoomDefault() {
     /**
     *   Resets the zoom to the default values.

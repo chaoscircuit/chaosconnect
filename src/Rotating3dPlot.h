@@ -26,6 +26,8 @@ class Rotating3dPlot : public ChaosPlot
         void setRotation(int rotation);
     
     private:
+        int xToValue(int x);
+        int yToValue(int y);
         int valueToX(int value);
         int valueToY(int value);
         void zoomDefault();

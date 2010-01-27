@@ -8,8 +8,13 @@
 
 Return1Plot::Return1Plot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                        const wxSize& size, long style, const wxString& name) 
-                       : ChaosPlot(parent, id, pos, size, style, name)
-{
+                       : ChaosPlot(parent, id, pos, size, style, name) {
+    /**
+    *   Constructor for the first return map.
+    *   This class inherits from the ChaosPlot class and redefines various
+    *   settings and drawing functions to create a first return map of the
+    *   data collected from the Chaos Unit.
+    */
     side_gutter_size = 15;
     bottom_gutter_size = 20;
     square = true;
@@ -28,13 +33,20 @@ Return1Plot::Return1Plot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                     (wxObjectEventFunction) &Return1Plot::timer1Timer );
 }
 
-// class destructor
-Return1Plot::~Return1Plot()
-{
-    // insert your code here
+Return1Plot::~Return1Plot() {
+    /**
+    *   Deconstructor for the Return1Plot class
+    */
 }
 
 void Return1Plot::drawPlot() {
+    /**
+    *   Main drawing function for the Return1Plot class.
+    *
+    *   Draws the axis on the graph.
+    *   Draws the y=x line across the graph (useful for analyzing return maps)
+    *   Plots the points using consecutive peaks for x and y values
+    */
     int x,y;
     
     startDraw();
@@ -77,6 +89,10 @@ void Return1Plot::drawPlot() {
 }
 
 void Return1Plot::OnDblClick(wxMouseEvent& evt) {
+    /**
+    *   Event handler for the graph double click.
+    *   Enables or disables the return map following
+    */
     if(timer1->IsRunning()) {
         timer1->Stop();
         timer_ticks = 0;
@@ -86,6 +102,11 @@ void Return1Plot::OnDblClick(wxMouseEvent& evt) {
 }
 
 void Return1Plot::followReturnPlot(int index) {
+    /**
+    *   Draws lines to follow the return plot and show if it is behaving
+    *   periodically or chaotically.  This is done by following a point to
+    *   the y=x line, mirroring it and drawing a line between the 3 points.
+    */
     int line_count = timer_ticks % 20;
     int x,y;
     float x_scale = graph_width/1024.0;
@@ -105,5 +126,9 @@ void Return1Plot::followReturnPlot(int index) {
 }
 
 void Return1Plot::timer1Timer(wxTimerEvent& event) {
+    /**
+    *   Event handler for timer1.
+    *   Increments timer_ticks so that we know how many return map points to follow.
+    */
     timer_ticks++;
 }
