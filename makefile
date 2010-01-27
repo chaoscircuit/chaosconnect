@@ -1,5 +1,3 @@
-COMPILERPATH = C:/Program Files/Dev-Cpp/
-
 BUILD     = build
 SRC       = src
 
@@ -29,8 +27,7 @@ OBJ       = $(BUILD)/ChaosConnectApp.o \
             $(BUILD)/GameShape.o \
             $(BUILD)/ChaosConnectResource.o
             
-LIBS      = -L"$(COMPILERPATH)lib" \
-            -mwindows \
+LIBS      = -mwindows \
             -l$(WXLIBNAME) \
             -lwxpng \
             -lwxtiff \
@@ -52,18 +49,7 @@ LIBS      = -L"$(COMPILERPATH)lib" \
             lib/libchaos.a \
             lib/libusb.a
 
-CXXINCS   = -I"$(COMPILERPATH)include" \
-            -I"$(COMPILERPATH)" \
-            -I"$(COMPILERPATH)include/common/wx/msw" \
-            -I"$(COMPILERPATH)include/common/wx/generic" \
-            -I"$(COMPILERPATH)include/common/wx/html" \
-            -I"$(COMPILERPATH)include/common/wx/xml" \
-            -I"$(COMPILERPATH)include/common/wx/xrc" \
-            -I"$(COMPILERPATH)include/common/wx" \
-            -I"$(COMPILERPATH)include/common"
-
-CXXFLAGS  = $(CXXINCS) \
-            -ffunction-sections \
+CXXFLAGS  = -ffunction-sections \
             -fdata-sections \
             -fno-exceptions \
             -fno-pcc-struct-return \
