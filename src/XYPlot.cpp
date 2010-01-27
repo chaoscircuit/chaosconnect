@@ -9,8 +9,10 @@
 // class constructor
 XYPlot::XYPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                        const wxSize& size, long style, const wxString& name) 
-                       : ChaosPlot(parent, id, pos, size, style, name)
-{
+                       : ChaosPlot(parent, id, pos, size, style, name) {
+    /**
+    *   Constructor for the XY plot. Initializes all settings for the phase portrait
+    */
     side_gutter_size = 20;
     bottom_gutter_size = 20;
     smallest_x_value = 0;
@@ -22,14 +24,23 @@ XYPlot::XYPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     zoomable_graph = true;
 }
 
-// class destructor
-XYPlot::~XYPlot()
-{
-    // insert your code here
+XYPlot::~XYPlot() {
+    /**
+    *   Deconstructor for the Rotating3dPlot class
+    */
 }
 
 void XYPlot::drawPlot() {
-    static int times_called = 0;
+    /**
+    *   Main drawing function for the XYPlot class.
+    *
+    *   Calculates the units for the axis and then draws them
+    *   Draws an XY phase portrait by graphing -X' vs. X
+    *
+    *   All size & plotting related functions should be handled using
+    *   the 'smallest/largest_x/y_value' variables. These variables control
+    *   the zooming on the graph.
+    */
     int x1,x2,x1_old,x2_old,x3;
     
     startDraw();
@@ -88,29 +99,47 @@ void XYPlot::drawPlot() {
         x1_old = x1;
         x2_old = x2;
     }
-    times_called = 0;
     
     // Display buffer
     endDraw();
 }
 
 int XYPlot::xToValue(int x) {
+    /**
+    *   Converts an x point on the graph to an ADC value.
+    *   This is a very important function that is used by the parent class
+    *   (ChaosPlot) for zooming.
+    */
     return ((x - side_gutter_size)*(largest_x_value - smallest_x_value))/graph_width + smallest_x_value;
 }
 
 int XYPlot::valueToX(int value) {
+    /**
+    *   Converts an ADC value to an X coordinate on the graph.
+    */
     return (((value - smallest_x_value)*graph_width)/(largest_x_value - smallest_x_value)) + side_gutter_size;
 }
 
 int XYPlot::yToValue(int y) {
+    /**
+    *   Converts a y point on the graph to an ADC value.
+    *   This is a very important function that is used by the parent class
+    *   (ChaosPlot) for zooming.
+    */
     return (((top_gutter_size + graph_height) - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
 }
 
 int XYPlot::valueToY(int value) {
+    /**
+    *   Converts an ADC value to a Y coordinate on the graph.
+    */
     return (graph_height-((value-smallest_y_value)*graph_height)/(largest_y_value - smallest_y_value)) + top_gutter_size;
 }
 
 void XYPlot::zoomDefault() {
+    /**
+    *   Resets the zoom to the default values.
+    */
     largest_x_value = 1024;
     smallest_x_value = 0;
     smallest_y_value = 0;

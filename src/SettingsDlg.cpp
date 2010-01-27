@@ -18,18 +18,28 @@ BEGIN_EVENT_TABLE(SettingsDlg,wxDialog)
 END_EVENT_TABLE()
 
 SettingsDlg::SettingsDlg(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
-: wxDialog(parent, id, title, position, size, style)
-{
+: wxDialog(parent, id, title, position, size, style) {
+    /**
+    *   Constructor for the Settings form. Creates the GUI and loads the 
+    *   current settings.
+    */
     CreateGUIControls();
     loadSettings();
 }
 
-SettingsDlg::~SettingsDlg()
-{
+SettingsDlg::~SettingsDlg() {
+    /** 
+    *   Destructor for the SettingsDlg class.
+    */
 }
 
-void SettingsDlg::CreateGUIControls()
-{
+void SettingsDlg::CreateGUIControls() {
+    /**
+    *   Creates all of the GUI controls on the settings form.
+    *
+    *   GUI layout is pretty basic and consists of several settings 
+    *   controls in a box sizer.
+    */
     mainVertSizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(mainVertSizer);
     this->SetAutoLayout(true);
@@ -178,25 +188,44 @@ void SettingsDlg::CreateGUIControls()
     Center();
 }
 
-void SettingsDlg::OnClose(wxCloseEvent& event)
-{
+void SettingsDlg::OnClose(wxCloseEvent& event) {
+    /**
+    *   Event handler for the form closing event
+    *   Exit the ChaosConnect Program
+    */
     Destroy();
 }
 
 void SettingsDlg::OnApply(wxCommandEvent& event) {
+    /**
+    *   Event handler for the apply button
+    *   Applies the current settings
+    */
     updateSettings();
 }
 
 void SettingsDlg::OnOk(wxCommandEvent& event) {
+    /**
+    *   Event handler for the OK button
+    *   Applies the current settings and closes the Dialog
+    */
     updateSettings();
     Destroy();
 }
 
 void SettingsDlg::OnCancel(wxCommandEvent& event) {
+    /**
+    *   Event handler for the cancel button
+    *   Closes the Dialog without applying any settings.
+    */
     Destroy();
 }
 
 void SettingsDlg::updateSettings() {
+    /**
+    *   Reads the controls on the dialog and updates the settings in the
+    *   ChaosSettings namespace accordingly.
+    */
     BifXAxis = mdacRadio->GetSelection();
     YAxisLabels = adcRadio->GetSelection();
     
@@ -230,6 +259,10 @@ void SettingsDlg::updateSettings() {
 }
 
 void SettingsDlg::loadSettings() {
+    /**
+    *   Reads the settings in the ChaosSettings namespace and updates the
+    *   controls accordingly.
+    */
     mdacRadio->SetSelection(BifXAxis);
     adcRadio->SetSelection(YAxisLabels);
     

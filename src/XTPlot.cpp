@@ -8,8 +8,10 @@
 
 XTPlot::XTPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                        const wxSize& size, long style, const wxString& name) 
-                       : ChaosPlot(parent, id, pos, size, style, name)
-{
+                       : ChaosPlot(parent, id, pos, size, style, name) {
+    /**
+    *   Constructor for the XT plot. Defaults to only showing X.
+    */
     side_gutter_size = 15;
     bottom_gutter_size = 1;
     x1Visible = true;
@@ -19,13 +21,21 @@ XTPlot::XTPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     graph_subtitle = wxT("X (V) vs. T");
 }
 
-// class destructor
-XTPlot::~XTPlot()
-{
-    // insert your code here
+XTPlot::~XTPlot() {
+    /**
+    *   Deconstructor for the Rotating3dPlot class
+    */
 }
 
 void XTPlot::drawPlot() {
+    /**
+    *   Main drawing function for the XTPlot class.
+    *
+    *   Calculates the units for the axis and then draws them
+    *   Draws an XT graph using X, X', and X'' depending on which ones
+    *   the user has selected.
+    *
+    */
     const int xt_points = 300;
     
     static int times_called = 0;
@@ -112,13 +122,22 @@ void XTPlot::drawPlot() {
 }
 
 void XTPlot::setX1Visibility(bool visible) {
+    /**
+    *   Enables or disables the visibility of X on the graph
+    */
     x1Visible = visible;
 }
 
 void XTPlot::setX2Visibility(bool visible) {
+    /**
+    *   Enables or disables the visibility of X' on the graph
+    */
     x2Visible = visible;
 }
 
 void XTPlot::setX3Visibility(bool visible) {
+    /**
+    *   Enables or disables the visibility of X'' on the graph
+    */
     x3Visible = visible;
 }

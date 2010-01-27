@@ -207,6 +207,7 @@ void ChaosConnectFrm::CreateGUIControls() {
 
 void ChaosConnectFrm::OnClose(wxCloseEvent& event) {
     /**
+    *   Event handler for the form closing event
     *   Exit the ChaosConnect Program
     */
     timer1->Stop();

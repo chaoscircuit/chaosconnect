@@ -9,8 +9,13 @@
 // class constructor
 Return2Plot::Return2Plot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                        const wxSize& size, long style, const wxString& name) 
-                       : ChaosPlot(parent, id, pos, size, style, name)
-{
+                       : ChaosPlot(parent, id, pos, size, style, name) {
+    /**
+    *   Constructor for the second return map.
+    *   This class inherits from the ChaosPlot class and redefines various
+    *   settings and drawing functions to create a second return map of the
+    *   data collected from the Chaos Unit.
+    */
     side_gutter_size = 15;
     bottom_gutter_size = 20;
     square = true;
@@ -18,13 +23,20 @@ Return2Plot::Return2Plot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     graph_subtitle = wxT("Peak(n+2) (V) vs. Peak(n) (V)");
 }
 
-// class destructor
-Return2Plot::~Return2Plot()
-{
-    // insert your code here
+Return2Plot::~Return2Plot() {
+    /**
+    *   Deconstructor for the Return2Plot class
+    */
 }
 
 void Return2Plot::drawPlot() {
+    /**
+    *   Main drawing function for the Return2Plot class.
+    *
+    *   Draws the axis on the graph.
+    *   Draws the y=x line across the graph (useful for analyzing return maps)
+    *   Plots the points using alternating peaks for x and y values
+    */
     int x,y;
     
     startDraw();
