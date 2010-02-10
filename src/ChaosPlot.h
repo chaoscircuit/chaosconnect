@@ -29,7 +29,7 @@ class ChaosPlot : public wxPanel
         void setDeviceStatus(bool connected, int value);
         virtual void zoomDefault();
         void saveToFile(wxString filename);
-        
+
         protected:
         virtual int xToValue(int x);
         virtual int yToValue(int y);
@@ -62,7 +62,6 @@ class ChaosPlot : public wxPanel
         wxBufferedDC* buffer;
         wxBitmap* bmp;
         wxClientDC* dc;
-        
         bool square;
         
         // Mouse location variables 

@@ -184,7 +184,7 @@ void BifurcationPlot::drawPlot() {
         bool cacheHit = libchaos_peaksCacheHit(mdac_value);
         if(!cacheHit) new_points--;
         if((ChaosSettings::BifRedraw && cacheHit) || (!cacheHit && new_points > 0)) {
-            wxLogMessage(wxT("drawing new points"));
+
             peaks = libchaos_getPeaks(mdac_value);
             if(cacheHit == false) {
                 miss_mdac = mdac_value;
@@ -193,7 +193,7 @@ void BifurcationPlot::drawPlot() {
             bifMemDC.SetPen(bluePen);
             for(int j = 0; j < ChaosSettings::PeaksPerMdac; j++) {
                 int y = valueToY(peaks[j]);
-                if(y < graph_height && y > top_gutter_size) {
+                if(y < graph_height + top_gutter_size && y > top_gutter_size) {
                     drawPoint(&bifMemDC, valueToX(mdac_value), y);
                 }
             }

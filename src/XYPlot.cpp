@@ -66,9 +66,9 @@ void XYPlot::drawPlot() {
         x_max = largest_x_value;
     }
     
-    drawYAxis(y_min, y_max, (y_max-y_min)/4.0);
+    drawYAxis(y_min, y_max, (y_max-y_min)/6.0);
               
-    drawXAxis(x_min, x_max, (x_max-x_min)/4.0);
+    drawXAxis(x_min, x_max, (x_max-x_min)/6.0);
 
     if(device_connected == false) {
         endDraw();

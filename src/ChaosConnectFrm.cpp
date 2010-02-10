@@ -257,7 +257,7 @@ void ChaosConnectFrm::mnuExit(wxCommandEvent& event) {
     Destroy();
 }
 
-void ChaosConnectFrm::mnuFullscreen(wxCommandEvent& event) {
+void ChaosConnectFrm::mnuFullscreen(wxCommandEvent& event) { 
     /**
     *   Sets up the view so that one ChaosPanel is displayed fullscreen
     */
