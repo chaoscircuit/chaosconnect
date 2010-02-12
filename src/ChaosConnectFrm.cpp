@@ -132,11 +132,6 @@ void ChaosConnectFrm::CreateGUIControls() {
     bottomRowSizer->Add(startStopButton, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
     
     // Create status bar
-    /* 
-      ------------------------------------------------------
-      | Connected: ???   | MDAC VALUE: ????                 |
-      ------------------------------------------------------ 
-    */
     // Create fields
     statusBar = new wxStatusBar(this, ID_STATUSBAR);
     statusBar->SetFieldsCount(3);
@@ -146,8 +141,8 @@ void ChaosConnectFrm::CreateGUIControls() {
     
     // Set field sizes
     int statusBar_Widths[3];
-    statusBar_Widths[0] = 80;
-    statusBar_Widths[1] = 100;
+    statusBar_Widths[0] = 120;
+    statusBar_Widths[1] = 150;
     statusBar_Widths[2] = -1; // Auto scale to the rest of the size
     statusBar->SetStatusWidths(3,statusBar_Widths);
     
