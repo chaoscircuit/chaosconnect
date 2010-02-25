@@ -29,7 +29,8 @@ class ChaosPlot : public wxPanel
         void setDeviceStatus(bool connected, int value);
         virtual void zoomDefault();
         void saveToFile(wxString filename);
-
+        void setStatusBar(wxStatusBar *s);
+        
         protected:
         virtual int xToValue(int x);
         virtual int yToValue(int y);
@@ -63,6 +64,7 @@ class ChaosPlot : public wxPanel
         wxBitmap* bmp;
         wxClientDC* dc;
         bool square;
+        wxStatusBar *statusBar;
         
         // Mouse location variables 
         wxPoint drag_start;

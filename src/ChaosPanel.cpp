@@ -197,9 +197,10 @@ void ChaosPanel::initNewPlot() {
     }
     
     // If we created a new panel, add it to the sizer
-    if(plotSizer != NULL) {
+    if(plotPanel != NULL) {
         plotSizer->Add(plotPanel, 0, wxEXPAND | wxALL, 2);
         plotSizer->Layout();
+        plotPanel->setStatusBar(statusBar);
     }
 }
 
@@ -464,4 +465,14 @@ void ChaosPanel::On3DSliderChange(wxScrollEvent& evt) {
     ((Rotating3dPlot*)plotPanel)->setRotation(((wxSlider*)toolbar->FindControl(ID_3D_SLIDER))->GetValue());
     toolbar->ToggleTool(ID_3D_PLAY, true);
     ((Rotating3dPlot*)plotPanel)->setPause(true);
+}
+
+void ChaosPanel::setStatusBar(wxStatusBar *s) {
+    /**
+    *   Gives the panel access to the status bar so it can display cursor
+    *   coordinates
+    */
+    statusBar = s;
+    if(plotPanel)
+        plotPanel->setStatusBar(statusBar);
 }

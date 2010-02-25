@@ -298,6 +298,11 @@ void ChaosPlot::OnMouseMove(wxMouseEvent& evt) {
     if(mouse_dragging == true) {
         current_position = evt.GetPosition();
     }
+    if(statusBar) {
+        statusBar->SetStatusText(wxString::Format(wxT("(%d,%d)"), 
+                                        xToValue(evt.m_x),
+                                        yToValue(evt.m_y)), 3);
+    }
 }
 
 int ChaosPlot::xToValue(int x) {
@@ -360,4 +365,12 @@ void ChaosPlot::saveToFile(wxString filename) {
     */
     save_to_file = true;
     save_filename = filename;
+}
+
+void ChaosPlot::setStatusBar(wxStatusBar *s) {
+    /**
+    *   Gives the plot access to the status bar so it can display cursor
+    *   coordinates
+    */
+    statusBar = s;
 }

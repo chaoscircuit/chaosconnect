@@ -50,6 +50,7 @@ class ChaosPanel : public wxPanel
         void Show();
         void Hide();
         ChaosPlot* getChaosPlot();
+        void setStatusBar(wxStatusBar *s);
 
     private:
         void initGUI();
@@ -81,6 +82,7 @@ class ChaosPanel : public wxPanel
         wxBoxSizer* topSizer;
         ChaosPlot* plotPanel;
         wxToolBar* toolbar;
+        wxStatusBar *statusBar;
         
         int* mdac_value;
         

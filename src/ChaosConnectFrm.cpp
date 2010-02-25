@@ -137,19 +137,21 @@ void ChaosConnectFrm::CreateGUIControls() {
     // Create status bar
     // Create fields
     statusBar = new wxStatusBar(this, ID_STATUSBAR);
-    statusBar->SetFieldsCount(4);
+    statusBar->SetFieldsCount(5);
     statusBar->SetStatusText(wxT("Connected: ?"),0);
     statusBar->SetStatusText(wxT("MDAC Value: ????"),1);
     statusBar->SetStatusText(wxT("Resistance: ????"),2);
-    statusBar->SetStatusText(wxT("Updating"),3);
+    statusBar->SetStatusText(wxT("(X,Y)"),3);
+    statusBar->SetStatusText(wxT("Updating"),4);
     
     // Set field sizes
-    int statusBar_Widths[4];
+    int statusBar_Widths[5];
     statusBar_Widths[0] = 100;
     statusBar_Widths[1] = 100;
     statusBar_Widths[2] = 100;
-    statusBar_Widths[3] = -1; // Auto scale to the rest of the size
-    statusBar->SetStatusWidths(4,statusBar_Widths);
+    statusBar_Widths[3] = 150;
+    statusBar_Widths[4] = -1; // Auto scale to the rest of the size
+    statusBar->SetStatusWidths(5,statusBar_Widths);
     
     // Set status bar
     SetStatusBar(statusBar);
@@ -202,6 +204,12 @@ void ChaosConnectFrm::CreateGUIControls() {
     flexSizer->Fit(this); // Adjust window size to min
     flexSizer->Layout(); // Layout items in the sizer
     Center();
+    
+    // Give plots access to the status bar
+    display1->setStatusBar(statusBar);
+    display2->setStatusBar(statusBar);
+    display3->setStatusBar(statusBar);
+    display4->setStatusBar(statusBar);
 
 }
 
@@ -351,9 +359,9 @@ void ChaosConnectFrm::timer1Timer(wxTimerEvent& event) {
     }
     
     if(ChaosSettings::Paused == false) {
-        statusBar->SetStatusText(wxString::Format(wxT("Updating")), 3);
+        statusBar->SetStatusText(wxString::Format(wxT("Updating")), 4);
     } else {
-        statusBar->SetStatusText(wxString::Format(wxT("PAUSED")), 3);
+        statusBar->SetStatusText(wxString::Format(wxT("PAUSED")), 4);
     }
 
     // Reset the interval if we need to
