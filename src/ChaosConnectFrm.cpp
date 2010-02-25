@@ -139,17 +139,19 @@ void ChaosConnectFrm::CreateGUIControls() {
     */
     // Create fields
     statusBar = new wxStatusBar(this, ID_STATUSBAR);
-    statusBar->SetFieldsCount(3);
+    statusBar->SetFieldsCount(4);
     statusBar->SetStatusText(wxT("Connected: ?"),0);
     statusBar->SetStatusText(wxT("MDAC Value: ????"),1);
     statusBar->SetStatusText(wxT("Resistance: ????"),2);
+    statusBar->SetStatusText(wxT("Updating"),3);
     
     // Set field sizes
-    int statusBar_Widths[3];
-    statusBar_Widths[0] = 80;
+    int statusBar_Widths[4];
+    statusBar_Widths[0] = 100;
     statusBar_Widths[1] = 100;
-    statusBar_Widths[2] = -1; // Auto scale to the rest of the size
-    statusBar->SetStatusWidths(3,statusBar_Widths);
+    statusBar_Widths[2] = 100;
+    statusBar_Widths[3] = -1; // Auto scale to the rest of the size
+    statusBar->SetStatusWidths(4,statusBar_Widths);
     
     // Set status bar
     SetStatusBar(statusBar);
@@ -349,6 +351,12 @@ void ChaosConnectFrm::timer1Timer(wxTimerEvent& event) {
         display4->getChaosPlot()->setDeviceStatus(false, 4095);
     }
     
+    if(ChaosSettings::Paused == false) {
+        statusBar->SetStatusText(wxString::Format(wxT("Updating")), 3);
+    } else {
+        statusBar->SetStatusText(wxString::Format(wxT("PAUSED")), 3);
+    }
+
     // Reset the interval if we need to
     if(timer1->GetInterval() != ChaosSettings::UpdatePeriod) {
         timer1->Start(ChaosSettings::UpdatePeriod);
