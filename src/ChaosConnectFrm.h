@@ -59,6 +59,7 @@ class ChaosConnectFrm : public wxFrame
         void timer1Timer(wxTimerEvent& event);
         void OnStartStopBtn(wxCommandEvent& event);
         void OnSettingsApplyBtn(wxCommandEvent& event);
+        void OnBifEraseBtn(wxCommandEvent& event);
         void DisplayBifurcationSettings();
 
         // Functions
@@ -85,6 +86,7 @@ class ChaosConnectFrm : public wxFrame
         wxStaticText *peaksLabel;
         wxSpinCtrl *peaksSpinner;
         wxButton *settingsApplyButton;
+        wxButton *bifEraseButton;
 
         
     private:
@@ -113,6 +115,7 @@ class ChaosConnectFrm : public wxFrame
             ID_PEAKS_SPINNER,
             ID_STEPS_SPINNER,
             ID_SETTINGS_APPLY_BTN,
+            ID_BIF_ERASE_BTN,
             ID_DUMMY_VALUE_
         };
 };

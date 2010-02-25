@@ -181,7 +181,17 @@ void BifurcationPlot::drawPlot() {
     int miss_mdac = -1;
     for(int i = 1; i < graph_width; i+=step) {
         int mdac_value = xToMdac(i);
+        
+        /* Since the user can technically zoom into areas slightly beyond
+        our mdac limits, we have to ensure we have a correct value. */
+        if (mdac_value > 4095) {
+            mdac_value = 4095;
+        } else if (mdac_value < 0) {
+            mdac_value = 0;
+        }
+        
         bool cacheHit = libchaos_peaksCacheHit(mdac_value);
+
         if(!cacheHit) new_points--;
         if((ChaosSettings::BifRedraw && cacheHit) || (!cacheHit && new_points > 0)) {
 
