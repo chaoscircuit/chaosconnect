@@ -366,12 +366,23 @@ void ChaosConnectFrm::OnStartStopBtn(wxCommandEvent& event) {
     *   Event handler for the start/stop button. 
     *   Pauses/unpauses the collection of new data.
     */
+    wxColor button_color;
+    int r,g,b;
+    
     if(ChaosSettings::Paused == true) {
         ChaosSettings::Paused = false;
         startStopButton->SetLabel(wxT("Pause"));
+        startStopButton->SetBackgroundColour(wxNullColour);
     } else {
         ChaosSettings::Paused = true;
         startStopButton->SetLabel(wxT("Resume"));
+        // get the button color
+        button_color = startStopButton->GetBackgroundColour();
+        // add more green
+        r = button_color.Red() - 50;
+        g = button_color.Green();
+        b = button_color.Blue() - 50;
+        startStopButton->SetBackgroundColour(wxColor(r,g,b));
     }
 }
 
