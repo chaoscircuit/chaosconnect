@@ -9,7 +9,7 @@
 #include "ChaosPlot.h"
 #include "libchaos.h"
 
-class XYPlot : public ChaosPlot
+class XYPlot : public ChaosPlot 
 {
     public:
         // class constructor

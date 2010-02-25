@@ -2,7 +2,7 @@
  * \file BifurcationPlot.cpp
  * \brief Bifurcation Plot Class
  */
-
+  
 #include "BifurcationPlot.h"
 
 // class constructor

@@ -59,6 +59,7 @@ class ChaosConnectFrm : public wxFrame
         void timer1Timer(wxTimerEvent& event);
         void OnStartStopBtn(wxCommandEvent& event);
         void OnSettingsApplyBtn(wxCommandEvent& event);
+        void DisplayBifurcationSettings();
 
         // Functions
         void CreateGUIControls();

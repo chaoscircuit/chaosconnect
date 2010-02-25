@@ -21,6 +21,7 @@ namespace ChaosSettings {
     bool Paused;
     float Version;
     bool BifRedraw;
+    bool BifVisible;
     
     void initSettings() {
         /**
@@ -39,5 +40,6 @@ namespace ChaosSettings {
         Paused = false;
         BifRedraw = true;
         Version = 1.003;
+        BifVisible = false;
     }
 }
