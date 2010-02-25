@@ -39,10 +39,15 @@ namespace ChaosSettings {
     
     // Set to true if the user clicks the pause button to halt data collection
     extern bool Paused;
+    
+    // Determines if we need to completely redraw the bifurcation or if we can used the cached bitmap
     extern bool BifRedraw;
     
     // Version number for the PC software
     extern float Version;
+    
+    // Set to true if there is a bifurcation graph displayed, used to show/hide bifurcation controls
+    extern bool BifVisible;
     
     // Initializes all variables to a default value
     extern void initSettings();

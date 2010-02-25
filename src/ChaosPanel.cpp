@@ -34,11 +34,11 @@ ChaosPanel::ChaosPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     *   Constructor for the Chaos Panel, initializes the user interface
     */
     plotPanel = NULL; 
-    isShown = false;
     plotType = plot;
     wxLogMessage(wxT("Creating panel with plot type: %d"), plotType);
     initGUI();
     this->SetExtraStyle(wxWS_EX_PROCESS_IDLE);
+    Hide();
 }
 
 // class destructor
@@ -60,7 +60,7 @@ void ChaosPanel::initGUI() {
         graphChoice->SetSelection(0);
         break;
     case CHAOS_XY:
-    graphChoice->SetSelection(1);
+        graphChoice->SetSelection(1);
         break;
     case CHAOS_XT:
         graphChoice->SetSelection(2);
@@ -159,6 +159,10 @@ void ChaosPanel::initNewPlot() {
         plotPanel = NULL;
     }
     
+    if(plotType == CHAOS_BIFURCATION) {
+        ChaosSettings::BifVisible = false;
+    }
+    
     // Create a new plot panel based on selection and set the title
     plotType = PlotTypes(graphChoice->GetSelection());
     clearPlotTools();
@@ -166,6 +170,7 @@ void ChaosPanel::initNewPlot() {
         case CHAOS_BIFURCATION:
             plotPanel = new BifurcationPlot(this, wxID_ANY, wxPoint(5, 30), wxSize(200, 100));
             addBifurcationTools();
+            ChaosSettings::BifVisible = true;
             break;
         case CHAOS_XY:
             plotPanel = new XYPlot(this, wxID_ANY, wxPoint(5, 30), wxSize(200, 100));
@@ -203,6 +208,13 @@ void ChaosPanel::OnChoice(wxCommandEvent& evt) {
     *   Event handler for the dropdown box. Creates a new plot of the
     *   desired type.
     */
+    
+    if(PlotTypes(graphChoice->GetSelection()) == CHAOS_BIFURCATION && ChaosSettings::BifVisible) {
+        wxLogMessage("Cannot display more than one bifurcation graph.");
+        graphChoice->SetSelection(plotType);
+        return;
+    }
+    
     initNewPlot();
 }
 
@@ -218,8 +230,6 @@ void ChaosPanel::OnIdle(wxIdleEvent& evt) {
             evt.RequestMore();
         }
     }
-    
-
 }
 
 void ChaosPanel::OnPaint(wxPaintEvent& evt) {
@@ -237,7 +247,18 @@ void ChaosPanel::Show() {
     /**
     *   Informs the panel that it is being shown
     */
+    
+    if(isShown == false && ChaosSettings::BifVisible == true && plotType == CHAOS_BIFURCATION) {
+        graphChoice->SetSelection(2);
+        initNewPlot();
+        ChaosSettings::BifVisible = true;
+    }
+    
     isShown = true;
+    
+    if(plotType == CHAOS_BIFURCATION) {
+        ChaosSettings::BifVisible = true;
+    }
 }
 
 void ChaosPanel::Hide() {
@@ -245,6 +266,9 @@ void ChaosPanel::Hide() {
     *   Informs the panel that it is not being shown
     */
     isShown = false;
+    if(plotType == CHAOS_BIFURCATION) {
+        ChaosSettings::BifVisible = false;
+    }
 }
 
 ChaosPlot* ChaosPanel::getChaosPlot() {

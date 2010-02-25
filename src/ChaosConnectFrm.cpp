@@ -322,6 +322,7 @@ void ChaosConnectFrm::timer1Timer(wxTimerEvent& event) {
     *   Sends the connection information to the plots.
     *   Collects more data if data collection is not paused.
     */
+    DisplayBifurcationSettings();
      if(libchaos_isConnected() == true) {  
         // Update the status bar
         statusBar->SetStatusText(wxT("Connected: Yes"),0);
@@ -377,5 +378,26 @@ void ChaosConnectFrm::OnSettingsApplyBtn(wxCommandEvent& event) {
         ChaosSettings::PeaksPerMdac = peaksSpinner->GetValue();
         libchaos_setPeaksPerMDAC(ChaosSettings::PeaksPerMdac);
         ChaosSettings::BifRedraw = true;
+    }
+}
+
+void ChaosConnectFrm::DisplayBifurcationSettings() {
+    /**
+    *   Determines if a bifurcation graph is being displayed and 
+    *   enables/disables the bifurcation settings accordingly.
+    */
+    
+    if(ChaosSettings::BifVisible == true) {
+        stepsLabel->Show();
+        stepsSpinner->Show();
+        peaksLabel->Show();
+        peaksSpinner->Show();
+        settingsApplyButton->Show();
+    } else {
+        stepsLabel->Hide();
+        stepsSpinner->Hide();
+        peaksLabel->Hide();
+        peaksSpinner->Hide();
+        settingsApplyButton->Hide();        
     }
 }
