@@ -26,6 +26,7 @@ BEGIN_EVENT_TABLE(ChaosConnectFrm,wxFrame)
     EVT_MENU(ID_MNU_ABOUT, ChaosConnectFrm::mnuAbout)    
     EVT_BUTTON(ID_START_STOP_BTN, ChaosConnectFrm::OnStartStopBtn)
     EVT_BUTTON(ID_SETTINGS_APPLY_BTN, ChaosConnectFrm::OnSettingsApplyBtn)
+    EVT_BUTTON(ID_BIF_ERASE_BTN, ChaosConnectFrm::OnBifEraseBtn)
 END_EVENT_TABLE()
 
 ChaosConnectFrm::ChaosConnectFrm(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
@@ -121,12 +122,14 @@ void ChaosConnectFrm::CreateGUIControls() {
     
     // Buttons
     settingsApplyButton = new wxButton(display5, ID_SETTINGS_APPLY_BTN, wxT("Apply"));
+    bifEraseButton = new wxButton(display5, ID_BIF_ERASE_BTN, wxT("Redraw Bifurcation"));
     
     bottomRowSizer->Add(stepsLabel, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
     bottomRowSizer->Add(stepsSpinner, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
     bottomRowSizer->Add(peaksLabel, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
     bottomRowSizer->Add(peaksSpinner, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
     bottomRowSizer->Add(settingsApplyButton, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
+    bottomRowSizer->Add(bifEraseButton, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
     
     bottomRowSizer->AddStretchSpacer(1);
     bottomRowSizer->Add(startStopButton, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
@@ -393,11 +396,23 @@ void ChaosConnectFrm::DisplayBifurcationSettings() {
         peaksLabel->Show();
         peaksSpinner->Show();
         settingsApplyButton->Show();
+        bifEraseButton->Show();
     } else {
         stepsLabel->Hide();
         stepsSpinner->Hide();
         peaksLabel->Hide();
         peaksSpinner->Hide();
-        settingsApplyButton->Hide();        
+        settingsApplyButton->Hide();     
+        bifEraseButton->Hide();
     }
+}
+
+void ChaosConnectFrm::OnBifEraseBtn(wxCommandEvent& event) {
+    /**
+    *   Event handler for the erase button
+    *   Erases the stored bifurcation data and causes the bifurcation 
+    *   to be redrawn.
+    */
+    libchaos_setPeaksPerMDAC(ChaosSettings::PeaksPerMdac);
+    ChaosSettings::BifRedraw = true;
 }
