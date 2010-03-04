@@ -316,6 +316,7 @@ void ChaosPanel::addXTTools() {
     toolbarBitmaps[1] = new wxBitmap(bullet_blue_xpm);
     toolbarBitmaps[2] = new wxBitmap(bullet_green_xpm);
 
+    toolbar->DeleteTool(ID_DEFAULT_ZOOM);
     toolbar->AddCheckTool(ID_XT_X1, wxT("View X"), *toolbarBitmaps[0], wxNullBitmap, wxT("View X"));
     toolbar->AddCheckTool(ID_XT_X2, wxT("View Xdot"), *toolbarBitmaps[1], wxNullBitmap, wxT("View Xdot"));
     toolbar->AddCheckTool(ID_XT_X3, wxT("View Xdotdot"), *toolbarBitmaps[2], wxNullBitmap, wxT("View Xdotdot"));
