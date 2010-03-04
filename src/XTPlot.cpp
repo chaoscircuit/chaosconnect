@@ -12,8 +12,8 @@ XTPlot::XTPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     /**
     *   Constructor for the XT plot. Defaults to only showing X.
     */
-    side_gutter_size = 15;
-    bottom_gutter_size = 1;
+    side_gutter_size = 20;
+    bottom_gutter_size = 20;
     x1Visible = true;
     x2Visible = false;
     x3Visible = false;
@@ -54,6 +54,7 @@ void XTPlot::drawPlot() {
         graph_subtitle = wxT("X (ADC) vs. T");
         drawYAxis(0,1024,341);
     }
+    drawXAxis(0,5,1);
 
     if(device_connected == false) {
         endDraw();
@@ -65,13 +66,8 @@ void XTPlot::drawPlot() {
     float x_scale;
     float y_scale = float(graph_height)/1024.0;
     
-    if(plot_width > xt_points) {
-        plot_points = xt_points;
-        x_scale = float(plot_width)/xt_points;
-    } else {
-        plot_points = plot_width;
-        x_scale = 1.0;
-    }
+    plot_points = xt_points;
+    x_scale = float(plot_width)/xt_points;
     
     start = libchaos_getTriggerIndex();
 
