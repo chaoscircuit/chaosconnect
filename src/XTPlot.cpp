@@ -18,7 +18,7 @@ XTPlot::XTPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     x2Visible = false;
     x3Visible = false;
     graph_title = wxT("Waveform as a function of time");
-    graph_subtitle = wxT("X (V) vs. T");
+    graph_subtitle = wxT("X (V) vs. T(ms)");
 }
 
 XTPlot::~XTPlot() {
@@ -38,6 +38,9 @@ void XTPlot::drawPlot() {
     */
     const int xt_points = 300;
     
+    // max time on the graph in ms
+    float max_time = xt_points*(1/72000.0)*1000;
+    
     static int times_called = 0;
     
     int x1,x2,x1_old,x2_old, x3, x3_old;
@@ -45,16 +48,16 @@ void XTPlot::drawPlot() {
     
     startDraw();
     if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VGND) {
-        graph_subtitle = wxT("X (V) vs. T");
+        graph_subtitle = wxT("X (V) vs. T(ms)");
         drawYAxis(0.0,3.3,1);
     } else if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VBIAS) {
-        graph_subtitle = wxT("X (V) vs. T");
+        graph_subtitle = wxT("X (V) vs. T(ms)");
         drawYAxis(-1.2,2.1,.5);
     } else {
-        graph_subtitle = wxT("X (ADC) vs. T");
+        graph_subtitle = wxT("X (ADC) vs. T(ms)");
         drawYAxis(0,1024,341);
     }
-    drawXAxis(0,5,1);
+    drawXAxis(0,max_time,max_time/5.0);
 
     if(device_connected == false) {
         endDraw();
