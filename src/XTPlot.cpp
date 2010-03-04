@@ -17,7 +17,7 @@ XTPlot::XTPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     x1Visible = true;
     x2Visible = false;
     x3Visible = false;
-    graph_title = wxT("Timegraph of the waveform");
+    graph_title = wxT("Waveform as a function of time");
     graph_subtitle = wxT("X (V) vs. T");
 }
 
