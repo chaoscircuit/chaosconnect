@@ -141,3 +141,15 @@ void XTPlot::setX3Visibility(bool visible) {
     */
     x3Visible = visible;
 }
+
+int XTPlot::yToValue(int y) {
+    /**
+    *   Converts a y point on the graph to an ADC value.
+    *   This is a very important function that is used by the parent class
+    *   (ChaosPlot) for zooming.
+    */
+    if ( graph_height == 0) {
+        return 1;
+    }
+    return (((top_gutter_size + graph_height) - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
+}

@@ -400,3 +400,31 @@ void BifurcationPlot::setPause(bool pause) {
     */
     paused = pause;
 }
+
+void BifurcationPlot::UpdateStatusBar(int m_x, int m_y) {
+    /**
+    *   Updates the cursor information in the status bar
+    */
+    float x, y;
+    if(statusBar) {
+        x = xToValue(m_x);
+        y = yToValue(m_y);
+        
+        if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VBIAS) {
+            y = y*3.3/1024 - 1.2;
+        } else if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VGND) {
+            y = y*3.3/1024;
+        }
+        
+        if(ChaosSettings::BifXAxis == ChaosSettings::RESISTANCE_VALUES) {
+            x = libchaos_mdacToResistance(x)/1000;
+            statusBar->SetStatusText(wxString::Format(wxT("(%.3fk,%.3f)"),
+                                        x,
+                                        y), 3);
+        } else {
+            statusBar->SetStatusText(wxString::Format(wxT("(%d,%.3f)"),
+                                        (int)x,
+                                        y), 3);
+        }
+    }
+}

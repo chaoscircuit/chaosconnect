@@ -28,6 +28,7 @@ class XYPlot : public ChaosPlot
         int yToValue(int y);
         int valueToX(int value);
         int valueToY(int value);
+        void UpdateStatusBar(int m_x, int m_y);
         void zoomDefault();
 };
 

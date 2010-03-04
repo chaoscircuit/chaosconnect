@@ -151,3 +151,26 @@ void XYPlot::zoomDefault() {
     smallest_y_value = 0;
     largest_y_value = 1024;
 }
+
+void XYPlot::UpdateStatusBar(int m_x, int m_y) {
+    /**
+    *   Updates the cursor information in the status bar
+    */
+    float x, y;
+    if(statusBar) {
+        x = xToValue(m_x);
+        y = yToValue(m_y);
+        
+        if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VBIAS) {
+            y = y*3.3/1024 - 1.2;
+            x = x*3.3/1024 - 1.2;
+        } else if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VGND) {
+            y = y*3.3/1024;
+            x = x*3.3/1024;
+        }
+        
+        statusBar->SetStatusText(wxString::Format(wxT("(%.3f,%.3f)"),
+                                        x,
+                                        y), 3);
+    }
+}
