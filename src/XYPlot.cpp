@@ -110,6 +110,9 @@ int XYPlot::xToValue(int x) {
     *   This is a very important function that is used by the parent class
     *   (ChaosPlot) for zooming.
     */
+    if ( graph_width == 0) {
+        return 1;
+    }
     return ((x - side_gutter_size)*(largest_x_value - smallest_x_value))/graph_width + smallest_x_value;
 }
 
@@ -126,6 +129,9 @@ int XYPlot::yToValue(int y) {
     *   This is a very important function that is used by the parent class
     *   (ChaosPlot) for zooming.
     */
+    if ( graph_height == 0) {
+        return 1;
+    }
     return (((top_gutter_size + graph_height) - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
 }
 
