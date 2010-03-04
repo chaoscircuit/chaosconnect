@@ -111,8 +111,8 @@ void ChaosPanel::initToolbar() {
     // Graph Choice box
     wxArrayString choices;
     choices.Add(wxT("Bifurcation"));
-    choices.Add(wxT("XY"));
-    choices.Add(wxT("XT"));
+    choices.Add(wxT("Phase Portrait"));
+    choices.Add(wxT("X(t)"));
     choices.Add(wxT("Return Map 1"));
     choices.Add(wxT("Return Map 2"));
     choices.Add(wxT("FFT"));
