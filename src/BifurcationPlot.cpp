@@ -378,6 +378,9 @@ int BifurcationPlot::yToValue(int y) {
     /**
     *   Converts a Y coordinate to an ADC value.
     */
+    if ( graph_height == 0) {
+        return 1;
+    }
     return ((graph_height + top_gutter_size - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
 }
 
