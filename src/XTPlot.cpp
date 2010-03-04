@@ -12,13 +12,13 @@ XTPlot::XTPlot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     /**
     *   Constructor for the XT plot. Defaults to only showing X.
     */
-    side_gutter_size = 15;
-    bottom_gutter_size = 1;
+    side_gutter_size = 20;
+    bottom_gutter_size = 20;
     x1Visible = true;
     x2Visible = false;
     x3Visible = false;
-    graph_title = wxT("Timegraph of the waveform");
-    graph_subtitle = wxT("X (V) vs. T");
+    graph_title = wxT("Waveform as a function of time");
+    graph_subtitle = wxT("X (V) vs. T(ms)");
 }
 
 XTPlot::~XTPlot() {
@@ -38,6 +38,9 @@ void XTPlot::drawPlot() {
     */
     const int xt_points = 300;
     
+    // max time on the graph in ms
+    float max_time = xt_points*(1/72000.0)*1000;
+    
     static int times_called = 0;
     
     int x1,x2,x1_old,x2_old, x3, x3_old;
@@ -45,15 +48,16 @@ void XTPlot::drawPlot() {
     
     startDraw();
     if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VGND) {
-        graph_subtitle = wxT("X (V) vs. T");
+        graph_subtitle = wxT("X (V) vs. T(ms)");
         drawYAxis(0.0,3.3,1);
     } else if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VBIAS) {
-        graph_subtitle = wxT("X (V) vs. T");
+        graph_subtitle = wxT("X (V) vs. T(ms)");
         drawYAxis(-1.2,2.1,.5);
     } else {
-        graph_subtitle = wxT("X (ADC) vs. T");
+        graph_subtitle = wxT("X (ADC) vs. T(ms)");
         drawYAxis(0,1024,341);
     }
+    drawXAxis(0,max_time,max_time/5.0);
 
     if(device_connected == false) {
         endDraw();
@@ -65,13 +69,8 @@ void XTPlot::drawPlot() {
     float x_scale;
     float y_scale = float(graph_height)/1024.0;
     
-    if(plot_width > xt_points) {
-        plot_points = xt_points;
-        x_scale = float(plot_width)/xt_points;
-    } else {
-        plot_points = plot_width;
-        x_scale = 1.0;
-    }
+    plot_points = xt_points;
+    x_scale = float(plot_width)/xt_points;
     
     start = libchaos_getTriggerIndex();
 

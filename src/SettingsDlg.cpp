@@ -124,7 +124,7 @@ void SettingsDlg::CreateGUIControls() {
     panelVertSizer->Add(amountSizer,0,wxALIGN_LEFT | wxALL,5);
     
     amountLabel = new wxStaticText(WxPanel1, ID_AMOUNTLABEL, 
-                                  wxT("Data Points Per Sample (thousands)"),
+                                  wxT("Data Points Before Refresh (thousands)"),
                                   wxDefaultPosition, wxDefaultSize, 
                                   0);
     amountSizer->Add(amountLabel,0,wxALIGN_LEFT | wxALL,5);
