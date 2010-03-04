@@ -57,6 +57,7 @@ class ChaosPanel : public wxPanel
         void initNewPlot();
         void initToolbar();
         void clearPlotTools();
+        void addZoomTool();
         void addXTTools();
         void addBifurcationTools();
         void add3dTools();

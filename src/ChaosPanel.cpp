@@ -121,19 +121,10 @@ void ChaosPanel::initToolbar() {
     graphChoice = new wxChoice(toolbar, ID_CHOICE, wxPoint(25, 5), wxSize(120, 21), choices, 0, wxDefaultValidator, wxT("graphChoice"));
     
     // Set up toolbar
-    wxBitmap* toolbarBitmaps[1];
-    toolbarBitmaps[0] = new wxBitmap(zoom_xpm);
 
     toolbar->AddControl(graphChoice);
     toolbar->AddSeparator();
-    toolbar->AddTool(ID_DEFAULT_ZOOM, wxT("Default Zoom"), *toolbarBitmaps[0], wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString);
-    toolbar->AddSeparator();
     toolbar->Realize();
-    
-    // Can delete the bitmaps since they're reference counted
-    int i;
-    for (i = 0; i < 1; i++)
-        delete toolbarBitmaps[i];
 }
 
 void ChaosPanel::drawPlot() {
@@ -150,7 +141,7 @@ void ChaosPanel::initNewPlot() {
     /**
     *   Destroys the current plotPanel and creates a new one based
     *   on the choice selected in the dropdown box.
-    */
+    */                                     
     
     // Get rid of current plot
     if(plotPanel != NULL) {
@@ -166,6 +157,7 @@ void ChaosPanel::initNewPlot() {
     // Create a new plot panel based on selection and set the title
     plotType = PlotTypes(graphChoice->GetSelection());
     clearPlotTools();
+
     switch(plotType) {
         case CHAOS_BIFURCATION:
             plotPanel = new BifurcationPlot(this, wxID_ANY, wxPoint(5, 30), wxSize(200, 100));
@@ -174,6 +166,7 @@ void ChaosPanel::initNewPlot() {
             break;
         case CHAOS_XY:
             plotPanel = new XYPlot(this, wxID_ANY, wxPoint(5, 30), wxSize(200, 100));
+            addZoomTool();
             break;
         case CHAOS_XT:
             plotPanel = new XTPlot(this, wxID_ANY, wxPoint(5, 30), wxSize(200, 100));
@@ -298,12 +291,14 @@ void ChaosPanel::clearPlotTools() {
     *   Removes all of the specialized plot tools from the toolbar so that
     *   we have a clean slate to add the appropriate ones to.
     */
-    toolbar->RemoveTool(ID_XT_X1);
-    toolbar->RemoveTool(ID_XT_X2);
-    toolbar->RemoveTool(ID_XT_X3);
-    toolbar->RemoveTool(ID_BIF_PLAY);
-    toolbar->RemoveTool(ID_3D_PLAY);
-    toolbar->RemoveTool(ID_3D_SLIDER);
+
+    toolbar->DeleteTool(ID_DEFAULT_ZOOM);
+    toolbar->DeleteTool(ID_XT_X1);
+    toolbar->DeleteTool(ID_XT_X2);
+    toolbar->DeleteTool(ID_XT_X3);
+    toolbar->DeleteTool(ID_BIF_PLAY);
+    toolbar->DeleteTool(ID_3D_PLAY);
+    toolbar->DeleteTool(ID_3D_SLIDER);
 }
 
 void ChaosPanel::addXTTools() {
@@ -316,7 +311,6 @@ void ChaosPanel::addXTTools() {
     toolbarBitmaps[1] = new wxBitmap(bullet_blue_xpm);
     toolbarBitmaps[2] = new wxBitmap(bullet_green_xpm);
 
-    toolbar->DeleteTool(ID_DEFAULT_ZOOM);
     toolbar->AddCheckTool(ID_XT_X1, wxT("View X"), *toolbarBitmaps[0], wxNullBitmap, wxT("View X"));
     toolbar->AddCheckTool(ID_XT_X2, wxT("View Xdot"), *toolbarBitmaps[1], wxNullBitmap, wxT("View Xdot"));
     toolbar->AddCheckTool(ID_XT_X3, wxT("View Xdotdot"), *toolbarBitmaps[2], wxNullBitmap, wxT("View Xdotdot"));
@@ -335,10 +329,12 @@ void ChaosPanel::addBifurcationTools() {
     *   Adds the toolbar buttons for the Bifurcation graph
     *   This consists of a play/pause toggle button
     */
-    wxBitmap* toolbarBitmaps[1];
-    toolbarBitmaps[0] = new wxBitmap(control_pause_blue_xpm);
+    wxBitmap* toolbarBitmaps[2];
+    toolbarBitmaps[0] = new wxBitmap(zoom_xpm);
+    toolbarBitmaps[1] = new wxBitmap(control_pause_blue_xpm);
 
-    toolbar->AddCheckTool(ID_BIF_PLAY, wxT("Play/Pause Bifurcation"), *toolbarBitmaps[0], wxNullBitmap, wxT("Play/Pause Bifurcation"));
+    toolbar->AddTool(ID_DEFAULT_ZOOM, wxT("Default Zoom"), *toolbarBitmaps[0], wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString);
+    toolbar->AddCheckTool(ID_BIF_PLAY, wxT("Play/Pause Bifurcation"), *toolbarBitmaps[1], wxNullBitmap, wxT("Play/Pause Bifurcation"));
 
     if(ChaosSettings::Paused) {
         toolbar->ToggleTool(ID_BIF_PLAY, true);
@@ -347,7 +343,7 @@ void ChaosPanel::addBifurcationTools() {
 
     // Can delete the bitmaps since they're reference counted
     int i;
-    for (i = 0; i < 1; i++)
+    for (i = 0; i < 2; i++)
         delete toolbarBitmaps[i];
 }
 
@@ -357,12 +353,31 @@ void ChaosPanel::add3dTools() {
     *   These consist of a play/pause toggle button as well as a slider
     *   to manually control the rotation of the graph.
     */
-    wxBitmap* toolbarBitmaps[1];
-    toolbarBitmaps[0] = new wxBitmap(control_pause_blue_xpm);
+    wxBitmap* toolbarBitmaps[2];
+    toolbarBitmaps[0] = new wxBitmap(zoom_xpm);
+    toolbarBitmaps[1] = new wxBitmap(control_pause_blue_xpm);
     
-    toolbar->AddCheckTool(ID_3D_PLAY, wxT("Play/Pause Rotation"), *toolbarBitmaps[0], wxNullBitmap, wxT("Play/Pause Rotation"));
+    toolbar->AddTool(ID_DEFAULT_ZOOM, wxT("Default Zoom"), *toolbarBitmaps[0], wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString);
+    toolbar->AddCheckTool(ID_3D_PLAY, wxT("Play/Pause Rotation"), *toolbarBitmaps[1], wxNullBitmap, wxT("Play/Pause Rotation"));
     toolbar->AddControl(new wxSlider(toolbar, ID_3D_SLIDER, 0, 0, 25));
     
+    toolbar->Realize();
+
+    // Can delete the bitmaps since they're reference counted
+    int i;
+    for (i = 0; i < 2; i++)
+        delete toolbarBitmaps[i];
+}
+
+void ChaosPanel::addZoomTool() {
+    /**
+    *   Adds the toolbar buttons for the Bifurcation graph
+    *   This consists of a play/pause toggle button
+    */
+    wxBitmap* toolbarBitmaps[1];
+    toolbarBitmaps[0] = new wxBitmap(zoom_xpm);
+
+    toolbar->AddTool(ID_DEFAULT_ZOOM, wxT("Default Zoom"), *toolbarBitmaps[0], wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString);
     toolbar->Realize();
 
     // Can delete the bitmaps since they're reference counted
