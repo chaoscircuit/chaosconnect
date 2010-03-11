@@ -58,7 +58,7 @@ class ChaosPlot : public wxPanel
         int side_gutter_size;
         int bottom_gutter_size;
         int top_gutter_size;
-        int* mdac_value;
+        //int* mdac_value;
         wxString graph_title;
         wxString graph_subtitle;
         wxBufferedDC* buffer;

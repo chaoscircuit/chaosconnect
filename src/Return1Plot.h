@@ -9,6 +9,7 @@
 #include "ChaosPlot.h"
 #include "libchaos.h"
 
+#define NUM_POINTS 600
 class Return1Plot : public ChaosPlot
 {
     public:
@@ -26,10 +27,18 @@ class Return1Plot : public ChaosPlot
         void OnDblClick(wxMouseEvent& evt);
         void followReturnPlot(int index);
         void timer1Timer(wxTimerEvent& event);
-        
+
         wxTimer *timer1;
         int timer_ticks;
+        int xToValue(int x);
+        int yToValue(int y);
+        int valueToX(int value);
+        int valueToY(int value);
         
+        void zoomDefault();
+        
+        int points[NUM_POINTS][2];
+        int point_count;
         enum {
             ID_TIMER1 = 1000,
         };
