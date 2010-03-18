@@ -211,7 +211,7 @@ void ChaosPanel::OnChoice(wxCommandEvent& evt) {
     */
     
     if(PlotTypes(graphChoice->GetSelection()) == CHAOS_BIFURCATION && ChaosSettings::BifVisible) {
-        wxLogMessage("Cannot display more than one bifurcation graph.");
+        wxLogMessage(wxT("Cannot display more than one bifurcation graph."));
         graphChoice->SetSelection(plotType);
         return;
     }
