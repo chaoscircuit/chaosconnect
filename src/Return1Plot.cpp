@@ -197,44 +197,6 @@ void Return1Plot::timer1Timer(wxTimerEvent& event) {
     timer_ticks++;
 }
 
-int Return1Plot::xToValue(int x) {
-    /**
-    *   Converts an x point on the graph to an ADC value.
-    *   This is a very important function that is used by the parent class
-    *   (ChaosPlot) for zooming.
-    */
-    if ( graph_width == 0) {
-        return 1;
-    }
-    return ((x - side_gutter_size)*(largest_x_value - smallest_x_value))/graph_width + smallest_x_value;
-}
-
-int Return1Plot::valueToX(int value) {
-    /**
-    *   Converts an ADC value to an X coordinate on the graph.
-    */
-    return (((value - smallest_x_value)*graph_width)/(largest_x_value - smallest_x_value)) + side_gutter_size;
-}
-
-int Return1Plot::yToValue(int y) {
-    /**
-    *   Converts a y point on the graph to an ADC value.
-    *   This is a very important function that is used by the parent class
-    *   (ChaosPlot) for zooming.
-    */
-    if ( graph_height == 0) {
-        return 1;
-    }
-    return (((top_gutter_size + graph_height) - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
-}
-
-int Return1Plot::valueToY(int value) {
-    /**
-    *   Converts an ADC value to a Y coordinate on the graph.
-    */
-    return (graph_height-((value-smallest_y_value)*graph_height)/(largest_y_value - smallest_y_value)) + top_gutter_size;
-}
-
 void Return1Plot::zoomDefault() {
     /**
     *   Resets the zoom to the default values.

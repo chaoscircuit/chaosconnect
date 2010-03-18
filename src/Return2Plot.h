@@ -24,11 +24,6 @@ class Return2Plot : public ChaosPlot
         ~Return2Plot();
         void drawPlot();
     private:
-        int xToValue(int x);
-        int yToValue(int y);
-        int valueToX(int value);
-        int valueToY(int value);
-        
         int points[NUM_POINTS][2];
         int point_count;
         

@@ -30,8 +30,6 @@ class BifurcationPlot : public ChaosPlot
         void drawMdacLine(wxDC* dc);
         int valueToX(int mdac_value);
         int xToValue(int x);
-        int valueToY(int y);
-        int yToValue(int y);
         void zoomDefault();
         int xToMdac(int x);
         void UpdateStatusBar(int m_x, int m_y);

@@ -30,10 +30,6 @@ class Return1Plot : public ChaosPlot
 
         wxTimer *timer1;
         int timer_ticks;
-        int xToValue(int x);
-        int yToValue(int y);
-        int valueToX(int value);
-        int valueToY(int value);
         
         void zoomDefault();
         

@@ -303,34 +303,40 @@ void ChaosPlot::OnMouseMove(wxMouseEvent& evt) {
 
 int ChaosPlot::xToValue(int x) {
     /**
-    *   Dummy function to convert from an on screen X coordinate to a 
+    *   Default function to convert from an on screen X coordinate to a 
     *   meaningful value. Overloaded in classes inherited from this one.
     */
-    return x;
+    if ( graph_width == 0) {
+        return 1;
+    }
+    return ((x - side_gutter_size)*(largest_x_value - smallest_x_value))/graph_width + smallest_x_value;
 }
 
 int ChaosPlot::yToValue(int y) {
     /**
-    *   Dummy function to convert from an on screen Y coordinate to a 
+    *   Default function to convert from an on screen Y coordinate to a 
     *   meaningful value. Overloaded in classes inherited from this one.
     */
-    return y;
+    if ( graph_height == 0) {
+        return 1;
+    }
+    return (((top_gutter_size + graph_height) - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
 }
 
 int ChaosPlot::valueToX(int value) {
     /**
-    *   Dummy function to convert from a meaningful value to an on screen 
+    *   Default function to convert from a meaningful value to an on screen 
     *   X coordinate. Overloaded in classes inherited from this one.
     */
-    return value;
+    return (((value - smallest_x_value)*graph_width)/(largest_x_value - smallest_x_value)) + side_gutter_size;
 }
 
 int ChaosPlot::valueToY(int value) {
     /**
-    *   Dummy function to convert from a meaningful value to an on screen 
+    *   Default function to convert from a meaningful value to an on screen 
     *   Y coordinate. Overloaded in classes inherited from this one.
     */
-    return value;
+    return (graph_height-((value-smallest_y_value)*graph_height)/(largest_y_value - smallest_y_value)) + top_gutter_size;
 }
 
 void ChaosPlot::zoomDefault() {

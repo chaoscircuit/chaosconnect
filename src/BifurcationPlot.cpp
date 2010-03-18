@@ -367,23 +367,6 @@ int BifurcationPlot::xToMdac(int x) {
     return mdac_value;
 }
 
-int BifurcationPlot::valueToY(int value) {
-    /**
-    *   Converts an ADC value to a  Y coordinate.
-    */
-    return (graph_height-((value-smallest_y_value)*graph_height)/(largest_y_value - smallest_y_value))  + top_gutter_size;
-}
-
-int BifurcationPlot::yToValue(int y) {
-    /**
-    *   Converts a Y coordinate to an ADC value.
-    */
-    if ( graph_height == 0) {
-        return 1;
-    }
-    return ((graph_height + top_gutter_size - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
-}
-
 void BifurcationPlot::zoomDefault() {
     /**
     *   Resets the zooming on the graph to the default level.

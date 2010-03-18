@@ -23,7 +23,6 @@ class XTPlot : public ChaosPlot
         void setX1Visibility(bool visible); 
         void setX2Visibility(bool visible);
         void setX3Visibility(bool visible);
-        int yToValue(int y);
     private:
         bool x1Visible;
         bool x2Visible;
