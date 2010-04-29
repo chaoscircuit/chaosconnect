@@ -33,6 +33,9 @@ Return1Plot::Return1Plot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
                     (wxObjectEventFunction) &Return1Plot::timer1Timer );
     zoomable_graph = true;
     point_count = 0;
+    old_mdac = 0;
+    old_x_range = 0;
+    old_y_range = 0;
     zoomDefault();
 }
 
@@ -51,9 +54,6 @@ void Return1Plot::drawPlot() {
     *   Plots the points using consecutive peaks for x and y values
     */
     int x,y;
-    static int old_mdac = 0;
-    static int old_x_range = 0;
-    static int old_y_range = 0;
     // Clear cache if necessary
     if(old_mdac != device_mdac_value ||
         old_x_range != (largest_x_value - smallest_x_value) ||

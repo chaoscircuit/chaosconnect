@@ -24,6 +24,9 @@ Return2Plot::Return2Plot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     
     zoomable_graph = true;
     point_count = 0;
+    old_mdac = 0;
+    old_x_range = 0;
+    old_y_range = 0;
     zoomDefault();
 }
 
@@ -42,9 +45,6 @@ void Return2Plot::drawPlot() {
     *   Plots the points using alternating peaks for x and y values
     */
     int x,y;
-    static int old_mdac = 0;
-    static int old_x_range = 0;
-    static int old_y_range = 0;
     // Clear cache if necessary
     if(old_mdac != device_mdac_value ||
         old_x_range != (largest_x_value - smallest_x_value) ||

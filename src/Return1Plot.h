@@ -37,6 +37,10 @@ class Return1Plot : public ChaosPlot
         
         void zoomDefault();
         
+        int old_mdac;
+        int old_x_range;
+        int old_y_range;
+    
         int points[NUM_POINTS][2];
         int point_count;
         enum {

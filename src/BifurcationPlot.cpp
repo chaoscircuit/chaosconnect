@@ -15,7 +15,7 @@ BifurcationPlot::BifurcationPlot(wxWindow* parent, wxWindowID id, const wxPoint&
     *   settings and drawing functions to create a Bifurcation diagram of
     *   data collected from the Chaos Unit.
     */
-    side_gutter_size = 15;
+    side_gutter_size = 20;
     bottom_gutter_size = 30;
     mouse_dragging = false;
     zoomDefault();
