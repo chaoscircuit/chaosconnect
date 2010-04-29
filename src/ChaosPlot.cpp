@@ -154,7 +154,7 @@ void ChaosPlot::drawYAxis(float bottom, float top, float interval) {
 
     for(int i = 0; i <= num_labels; i++ ) {
         if(fabs(int(interval) - interval) > .05 && abs(int(interval)) < 2.0) {
-            buf = wxString::Format(wxT("%.1f"),(bottom + i*interval));
+            buf = wxString::Format(wxT("%.2f"),(bottom + i*interval));
         } else {
             buf = wxString::Format(wxT("%d"),int(bottom + i*interval));
         }
@@ -163,8 +163,8 @@ void ChaosPlot::drawYAxis(float bottom, float top, float interval) {
         int y = (int)(graph_height-scale*i*fabs(interval) + top_gutter_size);
         
         buffer->DrawText(buf,
-                         side_gutter_size-15+x,
-                         y);
+                         side_gutter_size-20+x,
+                         y-8);
         buffer->DrawLine(side_gutter_size-5,
                          y,
                          x+graph_width+side_gutter_size,
@@ -193,7 +193,7 @@ void ChaosPlot::drawXAxis(float bottom, float top, float interval) {
     
     for(int i = 0; i <= num_labels; i++ ) {
         if(fabs(int(interval) - interval) > .05 && abs(int(interval)) < 2.0) {
-            buf = wxString::Format(wxT("%.1f"),(bottom + i*interval));
+            buf = wxString::Format(wxT("%.2f"),(bottom + i*interval));
         } else {
             buf = wxString::Format(wxT("%d"),int(bottom + i*interval));
         }
@@ -202,7 +202,7 @@ void ChaosPlot::drawXAxis(float bottom, float top, float interval) {
         int y = (int)(graph_height + top_gutter_size);
         
         buffer->DrawText(buf,
-                         x,
+                         x-15,
                          y+5);
         buffer->DrawLine(x,
                          y+5,
@@ -298,11 +298,7 @@ void ChaosPlot::OnMouseMove(wxMouseEvent& evt) {
     if(mouse_dragging == true) {
         current_position = evt.GetPosition();
     }
-    if(statusBar) {
-        statusBar->SetStatusText(wxString::Format(wxT("(%d,%d)"), 
-                                        xToValue(evt.m_x),
-                                        yToValue(evt.m_y)), 3);
-    }
+    UpdateStatusBar(evt.m_x, evt.m_y);
 }
 
 int ChaosPlot::xToValue(int x) {
@@ -373,4 +369,25 @@ void ChaosPlot::setStatusBar(wxStatusBar *s) {
     *   coordinates
     */
     statusBar = s;
+}
+
+void ChaosPlot::UpdateStatusBar(int m_x, int m_y) {
+    /**
+    *   Updates the cursor information in the status bar
+    */
+    float x, y;
+    if(statusBar) {
+        x = xToValue(m_x);
+        y = yToValue(m_y);
+        
+        if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VBIAS) {
+            y = y*3.3/1024 - 1.2;
+        } else if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VGND) {
+            y = y*3.3/1024;
+        }
+        
+        statusBar->SetStatusText(wxString::Format(wxT("(%.3f,%.3f)"),
+                                        x,
+                                        y), 3);
+    }
 }

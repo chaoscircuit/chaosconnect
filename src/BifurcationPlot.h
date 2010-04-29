@@ -34,6 +34,7 @@ class BifurcationPlot : public ChaosPlot
         int yToValue(int y);
         void zoomDefault();
         int xToMdac(int x);
+        void UpdateStatusBar(int m_x, int m_y);
     
         wxBitmap* bifBmp;
         

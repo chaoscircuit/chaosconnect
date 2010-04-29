@@ -31,6 +31,12 @@ Return1Plot::Return1Plot(wxWindow* parent, wxWindowID id, const wxPoint& pos,
     
     Connect( ID_TIMER1, wxEVT_TIMER,
                     (wxObjectEventFunction) &Return1Plot::timer1Timer );
+    zoomable_graph = true;
+    point_count = 0;
+    old_mdac = 0;
+    old_x_range = 0;
+    old_y_range = 0;
+    zoomDefault();
 }
 
 Return1Plot::~Return1Plot() {
@@ -48,6 +54,19 @@ void Return1Plot::drawPlot() {
     *   Plots the points using consecutive peaks for x and y values
     */
     int x,y;
+    // Clear cache if necessary
+    if(old_mdac != device_mdac_value ||
+        old_x_range != (largest_x_value - smallest_x_value) ||
+        old_y_range != (largest_y_value - smallest_y_value)) {
+        
+        // Reset cache
+        point_count = 0;
+        
+        // Update old values
+        old_mdac = device_mdac_value;
+        old_x_range = (largest_x_value - smallest_x_value);
+        old_y_range = (largest_y_value - smallest_y_value);
+    }
     
     startDraw();
     if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_ADC) {
@@ -56,8 +75,28 @@ void Return1Plot::drawPlot() {
         graph_subtitle = wxT("Peak(n+1) (V) vs. Peak(n) (V)");
     }
     
-    drawYAxis(0.0,3.3,1);
-    drawXAxis(0.0,3.3,1);
+    float x_min, x_max;
+    float y_min, y_max;
+    if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VGND) {
+        y_min = smallest_y_value*3.3/1024;
+        y_max = largest_y_value*3.3/1024;
+        x_min = smallest_x_value*3.3/1024;
+        x_max = largest_x_value*3.3/1024;
+    } else if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VBIAS) {
+        y_min = smallest_y_value*3.3/1024 - 1.2;
+        y_max = largest_y_value*3.3/1024 - 1.2;
+        x_min = smallest_x_value*3.3/1024 - 1.2;
+        x_max = largest_x_value*3.3/1024 - 1.2;
+    } else {
+        y_min = smallest_y_value;
+        y_max = largest_y_value;
+        x_min = smallest_x_value;
+        x_max = largest_x_value;
+    }
+    
+    drawYAxis(y_min, y_max, (y_max-y_min)/3.0);
+              
+    drawXAxis(x_min, x_max, (x_max-x_min)/3.0);
     
     buffer->DrawLine(side_gutter_size,graph_height+top_gutter_size,
                      side_gutter_size+graph_width,top_gutter_size);
@@ -70,17 +109,42 @@ void Return1Plot::drawPlot() {
     buffer->SetPen(bluePen);
     buffer->SetBrush(blueBrush);
     
-    float x_scale = graph_width/1024.0;
-    float y_scale = graph_height/1024.0;
-
-    // Get first plot point
+    // Get points from library
     for(int i = 0; i < libchaos_getNumReturnMapPoints(); i++) {
         libchaos_getReturnMap1Point(&x,&y, i);
         
-        x = (int)(x*x_scale + side_gutter_size);
-        y =  (int)(graph_height + top_gutter_size - (y * y_scale));
+        // Check that we can store more points and that the point found is inside the window
+        if( point_count < NUM_POINTS && 
+            x > smallest_x_value && x < largest_x_value &&
+            y > smallest_y_value && y < largest_y_value) {
+            
+            // Make sure we don't already have this point stored
+            bool unique = true;
+            for(int j = 0; j < point_count; j++)
+            {
+                if(points[j][0] == x && points[j][1] == y) {
+                    unique = false;
+                    break;
+                }
+            }
+            
+            // Add point to array
+            if(unique) {
+                points[point_count][0] = x;
+                points[point_count][1] = y;
+                point_count++;
+            }
+        }
+    }
+    
+    if(libchaos_getNumReturnMapPoints() > 500) {
+        libchaos_refreshReturnMapPoints();
+    }
 
-        drawPoint(buffer, x, y);
+    for(int i = 0; i < point_count; i++) {
+        drawPoint(buffer, 
+                valueToX(points[i][0]), 
+                valueToY(points[i][1]));
     }
     
     followReturnPlot(0);
@@ -131,4 +195,52 @@ void Return1Plot::timer1Timer(wxTimerEvent& event) {
     *   Increments timer_ticks so that we know how many return map points to follow.
     */
     timer_ticks++;
+}
+
+int Return1Plot::xToValue(int x) {
+    /**
+    *   Converts an x point on the graph to an ADC value.
+    *   This is a very important function that is used by the parent class
+    *   (ChaosPlot) for zooming.
+    */
+    if ( graph_width == 0) {
+        return 1;
+    }
+    return ((x - side_gutter_size)*(largest_x_value - smallest_x_value))/graph_width + smallest_x_value;
+}
+
+int Return1Plot::valueToX(int value) {
+    /**
+    *   Converts an ADC value to an X coordinate on the graph.
+    */
+    return (((value - smallest_x_value)*graph_width)/(largest_x_value - smallest_x_value)) + side_gutter_size;
+}
+
+int Return1Plot::yToValue(int y) {
+    /**
+    *   Converts a y point on the graph to an ADC value.
+    *   This is a very important function that is used by the parent class
+    *   (ChaosPlot) for zooming.
+    */
+    if ( graph_height == 0) {
+        return 1;
+    }
+    return (((top_gutter_size + graph_height) - y)*(largest_y_value - smallest_y_value))/graph_height + smallest_y_value;
+}
+
+int Return1Plot::valueToY(int value) {
+    /**
+    *   Converts an ADC value to a Y coordinate on the graph.
+    */
+    return (graph_height-((value-smallest_y_value)*graph_height)/(largest_y_value - smallest_y_value)) + top_gutter_size;
+}
+
+void Return1Plot::zoomDefault() {
+    /**
+    *   Resets the zoom to the default values.
+    */
+    largest_x_value = 1024;
+    smallest_x_value = 0;
+    smallest_y_value = 0;
+    largest_y_value = 1024;
 }

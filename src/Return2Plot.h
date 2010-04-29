@@ -9,9 +9,7 @@
 #include "ChaosPlot.h"
 #include "libchaos.h"
 
-/*
- * No description
- */
+#define NUM_POINTS 600
 class Return2Plot : public ChaosPlot
 {
     public:
@@ -25,6 +23,19 @@ class Return2Plot : public ChaosPlot
         // class destructor
         ~Return2Plot();
         void drawPlot();
+    private:
+        int xToValue(int x);
+        int yToValue(int y);
+        int valueToX(int value);
+        int valueToY(int value);
+        
+        int old_mdac;
+        int old_x_range;
+        int old_y_range;
+        int points[NUM_POINTS][2];
+        int point_count;
+        
+        void zoomDefault();
 };
 
 #endif

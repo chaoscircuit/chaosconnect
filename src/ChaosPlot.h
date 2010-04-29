@@ -36,6 +36,7 @@ class ChaosPlot : public wxPanel
         virtual int yToValue(int y);
         virtual int valueToX(int value);
         virtual int valueToY(int value);
+        virtual void UpdateStatusBar(int m_x, int m_y);
         void drawPoint(wxDC* buffer, int x, int y);
         bool save_to_file;
         wxString save_filename;
@@ -57,7 +58,7 @@ class ChaosPlot : public wxPanel
         int side_gutter_size;
         int bottom_gutter_size;
         int top_gutter_size;
-        int* mdac_value;
+        //int* mdac_value;
         wxString graph_title;
         wxString graph_subtitle;
         wxBufferedDC* buffer;

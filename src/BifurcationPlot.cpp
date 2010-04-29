@@ -15,7 +15,7 @@ BifurcationPlot::BifurcationPlot(wxWindow* parent, wxWindowID id, const wxPoint&
     *   settings and drawing functions to create a Bifurcation diagram of
     *   data collected from the Chaos Unit.
     */
-    side_gutter_size = 15;
+    side_gutter_size = 20;
     bottom_gutter_size = 30;
     mouse_dragging = false;
     zoomDefault();
@@ -399,4 +399,32 @@ void BifurcationPlot::setPause(bool pause) {
     *   Pauses or unpauses the bifurcation based on the flag passed in.
     */
     paused = pause;
+}
+
+void BifurcationPlot::UpdateStatusBar(int m_x, int m_y) {
+    /**
+    *   Updates the cursor information in the status bar
+    */
+    float x, y;
+    if(statusBar) {
+        x = xToValue(m_x);
+        y = yToValue(m_y);
+        
+        if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VBIAS) {
+            y = y*3.3/1024 - 1.2;
+        } else if(ChaosSettings::YAxisLabels == ChaosSettings::Y_AXIS_VGND) {
+            y = y*3.3/1024;
+        }
+        
+        if(ChaosSettings::BifXAxis == ChaosSettings::RESISTANCE_VALUES) {
+            x = libchaos_mdacToResistance(x)/1000;
+            statusBar->SetStatusText(wxString::Format(wxT("(%.3fk,%.3f)"),
+                                        x,
+                                        y), 3);
+        } else {
+            statusBar->SetStatusText(wxString::Format(wxT("(%d,%.3f)"),
+                                        (int)x,
+                                        y), 3);
+        }
+    }
 }
