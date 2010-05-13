@@ -417,7 +417,7 @@ void BifurcationPlot::UpdateStatusBar(int m_x, int m_y) {
         }
         
         if(ChaosSettings::BifXAxis == ChaosSettings::RESISTANCE_VALUES) {
-            x = libchaos_mdacToResistance(x)/1000;
+            x = libchaos_mdacToResistance((int)x)/1000;
             statusBar->SetStatusText(wxString::Format(wxT("(%.3fk,%.3f)"),
                                         x,
                                         y), 3);
